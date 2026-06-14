@@ -1,0 +1,19 @@
+{
+  "name": "poi-plugin-reload-game-button",
+  "version": "0.2.0",
+  "description": "Adds a touch-friendly floating reload-game panel to poi.",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "author": {
+    "name": "DuskWhite"
+  },
+  "license": "MIT",
+  "poiPlugin": {
+    "title": "Reload Game Button",
+    "description": "Add a touch-friendly floating panel for reloading only the game frame.",
+    "icon": "fa/refresh",
+    "priority": 10000
+  }
+}
