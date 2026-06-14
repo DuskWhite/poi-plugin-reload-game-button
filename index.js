@@ -4,6 +4,9 @@ const PLUGIN_ID = 'poi-plugin-reload-game-button'
 const PANEL_ID = 'poi-reload-game-panel'
 const STYLE_ID = 'poi-reload-game-button-style'
 const STORAGE_KEY = 'poi-plugin-reload-game-button:panel-state'
+const CLOSED_STORAGE_KEY = 'poi-plugin-reload-game-button:panel-closed'
+const SHOW_PANEL_EVENT = 'poi-plugin-reload-game-button:show-panel'
+const RELOAD_GAME_EVENT = 'poi-plugin-reload-game-button:reload-game'
 const RELOAD_TITLE = '重新载入游戏'
 
 const DEFAULT_STATE = {
@@ -72,6 +75,14 @@ function writePanelState(panel) {
     left: Math.round(rect.left),
   }
   window.localStorage.setItem(STORAGE_KEY, JSON.stringify(state))
+}
+
+function isPanelClosed() {
+  return window.localStorage.getItem(CLOSED_STORAGE_KEY) === 'true'
+}
+
+function setPanelClosed(closed) {
+  window.localStorage.setItem(CLOSED_STORAGE_KEY, closed ? 'true' : 'false')
 }
 
 function clamp(value, min, max) {
@@ -148,6 +159,31 @@ function ensureStyle() {
       user-select: none;
     }
 
+    #${PANEL_ID} .poi-reload-game-panel-title {
+      flex: 1 1 auto;
+      text-align: center;
+    }
+
+    #${PANEL_ID} .poi-reload-game-panel-close {
+      align-items: center;
+      background: transparent;
+      border: 0;
+      color: rgba(255, 255, 255, 0.86);
+      cursor: pointer;
+      display: flex;
+      flex: 0 0 26px;
+      font-size: 17px;
+      height: 22px;
+      justify-content: center;
+      line-height: 1;
+      padding: 0;
+      touch-action: manipulation;
+    }
+
+    #${PANEL_ID} .poi-reload-game-panel-close:active {
+      background: rgba(255, 255, 255, 0.12);
+    }
+
     #${PANEL_ID} .poi-reload-game-panel-button {
       align-items: center;
       background: #d9822b;
@@ -194,7 +230,28 @@ function createPanel() {
 
   const handle = document.createElement('div')
   handle.className = 'poi-reload-game-panel-handle'
-  handle.textContent = 'Reload'
+
+  const title = document.createElement('div')
+  title.className = 'poi-reload-game-panel-title'
+  title.textContent = 'Reload'
+
+  const close = document.createElement('button')
+  close.type = 'button'
+  close.className = 'poi-reload-game-panel-close'
+  close.title = '关闭'
+  close.setAttribute('aria-label', '关闭')
+  close.textContent = '×'
+  close.addEventListener('pointerdown', (event) => {
+    event.stopPropagation()
+  })
+  close.addEventListener('click', (event) => {
+    event.preventDefault()
+    event.stopPropagation()
+    closePanel(panel)
+  })
+
+  handle.appendChild(title)
+  handle.appendChild(close)
 
   const button = document.createElement('button')
   button.type = 'button'
@@ -220,6 +277,12 @@ function createPanel() {
   applyPanelState(panel)
 
   return panel
+}
+
+function closePanel(panel) {
+  writePanelState(panel)
+  setPanelClosed(true)
+  panel.remove()
 }
 
 function makePanelDraggable(panel, handle) {
@@ -293,6 +356,10 @@ function injectPanel() {
     return false
   }
 
+  if (isPanelClosed()) {
+    return false
+  }
+
   if (document.getElementById(PANEL_ID)) {
     return true
   }
@@ -300,6 +367,16 @@ function injectPanel() {
   ensureStyle()
   document.body.appendChild(createPanel())
   return true
+}
+
+function showPanel() {
+  setPanelClosed(false)
+  injectPanel()
+  const panel = document.getElementById(PANEL_ID)
+  if (panel) {
+    clampPanel(panel)
+    writePanelState(panel)
+  }
 }
 
 function startObserver() {
@@ -339,6 +416,8 @@ function pluginDidLoad() {
   startObserver()
   startRetryTimer()
   window.addEventListener('resize', handleWindowResize)
+  window.addEventListener(SHOW_PANEL_EVENT, showPanel)
+  window.addEventListener(RELOAD_GAME_EVENT, reloadGame)
 }
 
 function handleWindowResize() {
@@ -352,6 +431,8 @@ function handleWindowResize() {
 function pluginWillUnload() {
   document.removeEventListener('DOMContentLoaded', pluginDidLoad)
   window.removeEventListener('resize', handleWindowResize)
+  window.removeEventListener(SHOW_PANEL_EVENT, showPanel)
+  window.removeEventListener(RELOAD_GAME_EVENT, reloadGame)
   document.getElementById(PANEL_ID)?.remove()
   document.getElementById(STYLE_ID)?.remove()
 
@@ -369,4 +450,5 @@ function pluginWillUnload() {
 module.exports = {
   pluginDidLoad,
   pluginWillUnload,
+  reactClass: (props) => require('./views').reactClass(props),
 }

@@ -1,0 +1,9 @@
+{
+  "title": "Reload Game Button",
+  "description": "A touch-friendly floating button for reloading only the game frame.",
+  "showPanel": "Show floating panel",
+  "reloadGame": "Reload game",
+  "panelVisible": "Floating panel is visible.",
+  "panelHidden": "Floating panel is hidden.",
+  "close": "Close"
+}
