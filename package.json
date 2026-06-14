@@ -1,6 +1,6 @@
 {
   "name": "poi-plugin-reload-game-button",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Adds a touch-friendly floating reload-game panel to poi.",
   "main": "index.js",
   "files": [

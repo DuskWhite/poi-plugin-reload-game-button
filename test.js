@@ -28,7 +28,7 @@ assert.match(source, /function closePanel/)
 assert.match(source, /document\.getElementById\(PANEL_ID\)\?\.remove\(\)/)
 
 const viewSource = fs.readFileSync(path.join(__dirname, 'views', 'index.js'), 'utf8')
-assert.match(viewSource, /https:\/\/github\.com\/DuskWhite\/poi-plugin-reload-game-button/)
+assert.doesNotMatch(viewSource, /https:\/\/github\.com\/DuskWhite\/poi-plugin-reload-game-button/)
 
 const en = require('./i18n/en-US.json')
 const zh = require('./i18n/zh-CN.json')
