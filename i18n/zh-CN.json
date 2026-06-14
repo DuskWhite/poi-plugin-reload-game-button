@@ -3,6 +3,7 @@
   "description": "适合触摸屏使用的悬浮按钮，只重新载入游戏本体。",
   "showPanel": "显示悬浮窗",
   "reloadGame": "重新载入游戏",
+  "repository": "仓库地址",
   "panelVisible": "悬浮窗已显示。",
   "panelHidden": "悬浮窗已隐藏。",
   "close": "关闭"

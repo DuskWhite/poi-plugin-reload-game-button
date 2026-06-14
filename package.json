@@ -3,10 +3,32 @@
   "version": "0.3.0",
   "description": "Adds a touch-friendly floating reload-game panel to poi.",
   "main": "index.js",
+  "files": [
+    "README.md",
+    "index.js",
+    "views",
+    "i18n"
+  ],
   "scripts": {
     "test": "node test.js"
   },
+  "keywords": [
+    "kancolle",
+    "poi",
+    "plugin",
+    "poi-plugin",
+    "reload",
+    "touch"
+  ],
   "author": "DuskWhite",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DuskWhite/poi-plugin-reload-game-button.git"
+  },
+  "homepage": "https://github.com/DuskWhite/poi-plugin-reload-game-button#readme",
+  "bugs": {
+    "url": "https://github.com/DuskWhite/poi-plugin-reload-game-button/issues"
+  },
   "license": "MIT",
   "poiPlugin": {
     "title": "重新载入游戏",

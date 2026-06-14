@@ -7,6 +7,7 @@ const { useTranslation } = require('react-i18next')
 const SHOW_PANEL_EVENT = 'poi-plugin-reload-game-button:show-panel'
 const RELOAD_GAME_EVENT = 'poi-plugin-reload-game-button:reload-game'
 const PANEL_ID = 'poi-reload-game-panel'
+const REPOSITORY_URL = 'https://github.com/DuskWhite/poi-plugin-reload-game-button'
 
 function tt(t, key, fallback) {
   const translated = t(key)
@@ -83,6 +84,22 @@ function reactClass() {
       visible
         ? tt(t, 'panelVisible', '悬浮窗已显示。')
         : tt(t, 'panelHidden', '悬浮窗已隐藏。'),
+    ),
+    React.createElement(
+      'div',
+      { style: { marginTop: 10 } },
+      `${tt(t, 'repository', '仓库地址')}: `,
+      React.createElement(
+        'a',
+        {
+          href: REPOSITORY_URL,
+          onClick: (event) => {
+            event.preventDefault()
+            require('electron').shell.openExternal(REPOSITORY_URL)
+          },
+        },
+        REPOSITORY_URL,
+      ),
     ),
   )
 }
